@@ -544,7 +544,7 @@
             {
               id: 'home',
               label: '首页',
-              images: ['01.svg']
+              images: ['https://cdn.jsdelivr.net/gh/qingfengqaq/qingfeng-own@main/01.svg']
             }
           ],
           subNav: []
@@ -560,11 +560,11 @@
             { id: 'system', label: '04 技能' }
           ],
           panels: [
-            { id: 'overview', images: ['11.svg'] },
-            { id: 'design', images: ['12.svg'] },
-            { id: 'brand', images: ['13.svg'] },
-            { id: 'content', images: ['14.svg'] },
-            { id: 'system', images: ['15.svg'] }
+            { id: 'overview', images: ['https://cdn.jsdelivr.net/gh/qingfengqaq/qingfeng-own@main/11.svg'] },
+            { id: 'design', images: ['https://cdn.jsdelivr.net/gh/qingfengqaq/qingfeng-own@main/12.svg'] },
+            { id: 'brand', images: ['https://cdn.jsdelivr.net/gh/qingfengqaq/qingfeng-own@main/13.svg'] },
+            { id: 'content', images: ['https://cdn.jsdelivr.net/gh/qingfengqaq/qingfeng-own@main/14.svg'] },
+            { id: 'system', images: ['https://cdn.jsdelivr.net/gh/qingfengqaq/qingfeng-own@main/15.svg'] }
           ]
         },
         {
@@ -578,11 +578,11 @@
             { id: 'cooperate', label: '04 业务' }
           ],
           panels: [
-            { id: 'overview', images: ['21.svg'] },
-            { id: 'plan', images: ['22.svg'] },
-            { id: 'service', images: ['23.svg'] },
-            { id: 'budget', images: ['24.svg'] },
-            { id: 'cooperate', images: ['25.svg'] }
+            { id: 'overview', images: ['https://cdn.jsdelivr.net/gh/qingfengqaq/qingfeng-own@main/21.svg'] },
+            { id: 'plan', images: ['https://cdn.jsdelivr.net/gh/qingfengqaq/qingfeng-own@main/22.svg'] },
+            { id: 'service', images: ['https://cdn.jsdelivr.net/gh/qingfengqaq/qingfeng-own@main/23.svg'] },
+            { id: 'budget', images: ['https://cdn.jsdelivr.net/gh/qingfengqaq/qingfeng-own@main/24.svg'] },
+            { id: 'cooperate', images: ['https://cdn.jsdelivr.net/gh/qingfengqaq/qingfeng-own@main/25.svg'] }
           ]
         },
         {
@@ -766,10 +766,12 @@
       let currentSongSrc = null;
       let unlockListenersAttached = false;
 
+      // 修改后：直接生成完整的 jsDelivr 链接
       function buildSongList() {
         const list = [];
+        const cdnPrefix = 'https://cdn.jsdelivr.net/gh/qingfengqaq/qingfeng-own@main/';
         for (let i = 1; i <= MAX_SONG_INDEX; i++) {
-          list.push(String(i) + SONG_EXTENSION);
+          list.push(cdnPrefix + String(i) + SONG_EXTENSION);
         }
         return list;
       }
