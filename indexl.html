@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>清风 · 个人网站</title>
+  <meta name="description" content="整合首页、技能、业务、教学，单页模板" />
+  <style>
+
+    /* ^_^ 清风做的屎山代码 ^_^ */
+    /* ^_^ 不会真的有人连屎山都要抄吧? ^_^ */
+    /* ^_^ 屎山可抄，但如果抄图片设计我会追究你责任的 ^_^ */
+    /* ^_^ 不过屎山代码署名不能改，因为是我的进步史 ^_^ */
+
+    /* ===== 全局样式 ===== */
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Noto Serif SC", "Songti SC", "SimSun", "STSong", "PingFang SC", "Microsoft YaHei", "Segoe UI", serif;
+      color: #1f1d1c;
+      background: #f4efe8;
+      line-height: 1.75;
+      transition: filter 0.2s ease;
+    }
+
+    body.is-dim {
+      filter: brightness(0.82) saturate(0.9);
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    svg {
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    .container {
+      width: min(1160px, calc(100% - 24px));
+      margin: 0 auto;
+    }
+
+    /* ===== 头部 ===== */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: #f7f2ec;
+      border-bottom: 1px solid rgba(31, 29, 28, 0.06);
+    }
+
+    .topbar {
+      min-height: 56px;
+      display: grid;
+      grid-template-columns: minmax(90px, 0.9fr) minmax(0, 2fr) minmax(70px, 0.8fr);
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+      min-width: 0;
+      overflow: visible;
+    }
+
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      display: block;
+      border-radius: 50%;
+      background: #121212;
+      color: #fff;
+      font-weight: 700;
+      box-shadow: none;
+      flex-shrink: 0;
+      overflow: hidden;
+      object-fit: cover;
+    }
+
+    .brand-mark img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+      min-width: 0;
+    }
+
+    .brand-text strong {
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      font-family: "Noto Serif SC", "Songti SC", "SimSun", "STSong", serif;
+    }
+
+    .brand-text span {
+      font-size: 0.6rem;
+      color: #8d847d;
+      letter-spacing: 0.12em;
+      white-space: nowrap;
+      font-family: "Noto Serif SC", "Songti SC", "SimSun", "STSong", serif;
+    }
+
+    /* 主导航：能放下时居中匀称，放不下时从第一个开始（safe center） */
+    .main-nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: clamp(6px, 1.6vw, 24px);
+      min-width: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding: 0 0 0 2px;
+    }
+
+    .main-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    @supports (justify-content: safe center) {
+      .main-nav {
+        justify-content: safe center;
+      }
+    }
+
+    .nav-link {
+      flex: 0 0 auto;
+      text-align: center;
+      border: 1px solid rgba(31, 29, 28, 0.12);
+      background: rgba(255, 255, 255, 0.22);
+      color: #6f6560;
+      padding: 5px 12px;
+      border-radius: 11px;
+      transition: all 0.18s ease;
+      font-size: 0.56rem;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background: rgba(17, 17, 17, 0.08);
+      border-color: rgba(31, 29, 28, 0.18);
+      color: #1f1d1c;
+    }
+
+    .header-tools {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      min-width: 0;
+      flex-shrink: 0;
+    }
+
+    .music-toggle,
+    .brightness-toggle {
+      width: 22px;
+      height: 22px;
+      border-radius: 7px;
+      border: 1px solid rgba(31, 29, 28, 0.08);
+      background: rgba(255,255,255,0.45);
+      color: #1f1d1c;
+      cursor: pointer;
+      transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      font-size: 0.62rem;
+    }
+
+    .music-toggle:hover,
+    .brightness-toggle:hover {
+      transform: translateY(-1px);
+      box-shadow: none;
+    }
+
+    .music-toggle.is-playing {
+      background: rgba(22, 26, 29, 0.92);
+      color: #fff;
+      border-color: rgba(22, 26, 29, 0.95);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+    }
+
+    .music-toggle.is-muted {
+      background: rgba(255, 255, 255, 0.45);
+      color: #8d847d;
+      border-color: rgba(31, 29, 28, 0.08);
+    }
+
+    .brightness-toggle.is-dim {
+      background: rgba(120, 112, 104, 0.18);
+      color: #1f1d1c;
+      border-color: rgba(31, 29, 28, 0.1);
+    }
+
+    /* ===== 副导航 ===== */
+    .subnav-wrap {
+      padding: 0 0 6px;
+    }
+
+    .sub-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+      padding: 2px 2px 4px;
+      white-space: nowrap;
+    }
+
+    .sub-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .sub-link {
+      flex: 0 0 auto;
+      min-width: 74px;
+      text-align: center;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(31, 29, 28, 0.08);
+      background: rgba(255,255,255,0.2);
+      color: #6f6560;
+      font-size: clamp(0.52rem, 1vw, 0.68rem);
+      letter-spacing: 0.06em;
+      transition: all 0.18s ease;
+      box-shadow: none;
+      cursor: pointer;
+    }
+
+    .sub-link:hover,
+    .sub-link.active {
+      background: rgba(17, 17, 17, 0.9);
+      color: #fff;
+      border-color: rgba(17, 17, 17, 0.9);
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* ===== 页面主体：≤640px 铺满屏幕；>640px 与 container 对齐 ===== */
+    .page-shell {
+      width: 100%;
+      max-width: none;
+      padding: 0;
+      margin: 0;
+      background-color: #ffffff;
+    }
+
+    .subnav-panels {
+      width: min(1160px, calc(100% - 24px));
+      max-width: none;
+      margin: 0 auto;
+      padding: 0;
+      background: transparent;
+    }
+
+    .sub-panel {
+      display: none;
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      padding: 0;
+      background: transparent;
+    }
+
+    .sub-panel.active {
+      display: block;
+    }
+
+    .svg-mosaic {
+      display: block;
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      overflow: visible;
+    }
+
+    .svg-mosaic img {
+      display: block;
+      width: 100%;
+      max-width: none;
+      height: auto;
+      margin: 0;
+      padding: 0;
+      border: none;
+      box-shadow: none;
+      background-color: transparent;
+    }
+
+    .svg-mosaic img + img {
+      margin-top: -2px;
+    }
+
+    /* ===== 底部：白色背景，文字与页面 container 对齐
+       字号随屏幕宽度（即图片宽度）同步变大 ===== */
+    .footer {
+      display: block;
+      width: 100%;
+      margin: 0;
+      padding: 5px 0;
+      background: #ffffff;
+      border: none;
+    }
+
+    .footer .footer-inner {
+      width: min(1160px, calc(100% - 24px));
+      margin: 0 auto;
+      text-align: center;
+      font-size: 0.5rem;
+      color: #8d847d;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+      font-family: "Noto Serif SC", "Songti SC", "SimSun", "STSong", serif;
+      transition: font-size 0.15s ease;
+    }
+
+    /* 字号随屏幕宽度（即图片宽度）分级变大，与图片宽度同步 */
+    @media (min-width: 641px) {
+      .footer .footer-inner { font-size: 0.62rem; }
+    }
+    @media (min-width: 901px) {
+      .footer .footer-inner { font-size: 0.75rem; }
+    }
+    @media (min-width: 1160px) {
+      .footer .footer-inner { font-size: 0.88rem; }
+    }
+
+    /* ===== 移动端适配 ===== */
+    @media (max-width: 900px) {
+      .svg-mosaic img {
+        border-right: none;
+        border-bottom: none;
+      }
+
+      .svg-mosaic img + img {
+        margin-top: -1px;
+      }
+    }
+
+    /* ≤640px：图片和页脚都铺满屏幕（无左右边距） */
+    @media (max-width: 640px) {
+      /* 内容区铺满屏幕 */
+      .subnav-panels {
+        width: 100%;
+      }
+
+      /* 页脚铺满屏幕，文字两侧留一点内边距 */
+      .footer .footer-inner {
+        width: 100%;
+        padding: 0 8px;
+      }
+
+      /* 头部仍保留边距，让导航不贴边 */
+      .container {
+        width: min(100% - 12px, 100%);
+      }
+
+      .site-header {
+        padding: 0;
+      }
+
+      .topbar {
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        min-height: 46px;
+        gap: 2px;
+        padding: 3px 0 2px;
+      }
+
+      .brand {
+        gap: 4px;
+        min-width: 0;
+      }
+
+      .brand-mark {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .brand-text strong {
+        font-size: 0.72rem;
+        letter-spacing: 0.04em;
+        font-family: "Noto Serif SC", "Songti SC", "SimSun", "STSong", serif;
+      }
+
+      .brand-text span {
+        display: none;
+      }
+
+      .main-nav {
+        justify-content: flex-start;
+        gap: 3px;
+        padding-left: 2px;
+      }
+
+      .nav-link {
+        padding: 4px 5px;
+        letter-spacing: 0.02em;
+        font-size: 0.48rem;
+        font-family: "Noto Serif SC", "Songti SC", "SimSun", "STSong", serif;
+        border-width: 1px;
+      }
+
+      .header-tools {
+        gap: 3px;
+      }
+
+      .music-toggle,
+      .brightness-toggle {
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        font-size: 0.58rem;
+      }
+
+      .subnav-wrap {
+        padding: 0 0 4px;
+      }
+
+      .sub-nav {
+        gap: 3px;
+        padding: 0 0 1px;
+      }
+
+      .sub-link {
+        min-width: 52px;
+        padding: 4px 6px;
+        font-size: 0.5rem;
+        font-family: "Noto Serif SC", "Songti SC", "SimSun", "STSong", serif;
+      }
+    }
+
+    #year {
+      display: none;
+    }
+
+    .sub-panel {
+      animation: fade 0.2s ease;
+    }
+
+    @keyframes fade {
+      from { opacity: 0.6; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body data-page="index">
+
+  <!-- ===== 头部：品牌 + 主导航 + 工具 ===== -->
+  <header class="site-header">
+    <div class="container topbar">
+      <div class="brand" aria-label="网站">
+        <div class="brand-mark">
+          <img src="tx.png" alt="头像" onerror="this.style.display='none'; this.parentNode.textContent='Q';" />
+        </div>
+        <div class="brand-text">
+          <strong>清风</strong>
+        </div>
+      </div>
+
+      <nav class="main-nav" aria-label="主导航">
+        <a class="nav-link active" data-page="index" href="javascript:void(0)">首页</a>
+        <a class="nav-link" data-page="skill" href="javascript:void(0)">技能</a>
+        <a class="nav-link" data-page="business" href="javascript:void(0)">业务</a>
+        <a class="nav-link" data-page="teach" href="javascript:void(0)">教学</a>
+      </nav>
+
+      <div class="header-tools" aria-label="工具栏">
+        <button class="music-toggle" type="button" aria-label="音乐开关" aria-pressed="false">♪</button>
+        <button class="brightness-toggle" type="button" aria-label="亮度调节" aria-pressed="false" title="亮度调节">☀</button>
+      </div>
+    </div>
+
+    <div class="container subnav-wrap" id="subnavContainer">
+    </div>
+  </header>
+
+  <!-- ===== 主内容区域 ===== -->
+  <main class="page-shell">
+    <div class="subnav-panels" id="panelsContainer">
+    </div>
+  </main>
+
+  <!-- ===== 底部：白色背景，文字随图片宽度同步放大 ===== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      © <span id="year"></span> 清风 · Design by 清风</br>All Rights Reserved.</br>Picture design by 清风（可改图片美工署名）
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      // ---------- 配置数据 ----------
+      const PAGES = [
+        {
+          id: 'index',
+          label: '首页',
+          panels: [
+            {
+              id: 'home',
+              label: '首页',
+              images: ['01.svg']
+            }
+          ],
+          subNav: []
+        },
+        {
+          id: 'skill',
+          label: '技能',
+          subNav: [
+            { id: 'overview', label: '00 概览' },
+            { id: 'design', label: '01 技能' },
+            { id: 'brand', label: '02 技能' },
+            { id: 'content', label: '03 技能' },
+            { id: 'system', label: '04 技能' }
+          ],
+          panels: [
+            { id: 'overview', images: ['11.svg'] },
+            { id: 'design', images: ['12.svg'] },
+            { id: 'brand', images: ['13.svg'] },
+            { id: 'content', images: ['14.svg'] },
+            { id: 'system', images: ['15.svg'] }
+          ]
+        },
+        {
+          id: 'business',
+          label: '业务',
+          subNav: [
+            { id: 'overview', label: '00 概览' },
+            { id: 'plan', label: '01 业务' },
+            { id: 'service', label: '02 业务' },
+            { id: 'budget', label: '03 业务' },
+            { id: 'cooperate', label: '04 业务' }
+          ],
+          panels: [
+            { id: 'overview', images: ['21.svg'] },
+            { id: 'plan', images: ['22.svg'] },
+            { id: 'service', images: ['23.svg'] },
+            { id: 'budget', images: ['24.svg'] },
+            { id: 'cooperate', images: ['25.svg'] }
+          ]
+        },
+        {
+          id: 'teach',
+          label: '教学',
+          subNav: [
+            { id: 'overview', label: '00 概览' },
+            { id: 'course', label: '01 教学' },
+            { id: 'method', label: '02 教学' },
+            { id: 'case', label: '03 教学' },
+            { id: 'reserve', label: '04 教学' }
+          ],
+          panels: [
+            { id: 'overview', images: ['31.svg'] },
+            { id: 'course', images: ['32.svg'] },
+            { id: 'method', images: ['33.svg'] },
+            { id: 'case', images: ['34.svg'] },
+            { id: 'reserve', images: ['35.svg'] }
+          ]
+        }
+      ];
+
+      // ---------- 状态 ----------
+      let currentPageId = 'index';
+      let currentPanelId = 'home';
+
+      // ---------- DOM 元素 ----------
+      const navLinks = document.querySelectorAll('.nav-link');
+      const subnavContainer = document.getElementById('subnavContainer');
+      const panelsContainer = document.getElementById('panelsContainer');
+
+      // ---------- 渲染子导航 ----------
+      function renderSubNav() {
+        const page = PAGES.find(p => p.id === currentPageId);
+        if (!page) return;
+        subnavContainer.innerHTML = '';
+
+        if (!page.subNav || page.subNav.length === 0) {
+          const emptyNav = document.createElement('div');
+          emptyNav.className = 'sub-nav';
+          emptyNav.style.justifyContent = 'center';
+          emptyNav.style.padding = '0px 0 1px';
+          emptyNav.innerHTML = '<span style="font-size:0.5rem; color:#8d847d; letter-spacing:0.1em;">清风 · 个人网站 · 按钮显示低于4个可滑动</span>';
+          subnavContainer.appendChild(emptyNav);
+          return;
+        }
+
+        const nav = document.createElement('nav');
+        nav.className = 'sub-nav';
+        nav.setAttribute('aria-label', '子导航');
+
+        page.subNav.forEach(item => {
+          const a = document.createElement('a');
+          a.className = 'sub-link' + (item.id === currentPanelId ? ' active' : '');
+          a.href = 'javascript:void(0)';
+          a.textContent = item.label;
+          a.dataset.panel = item.id;
+          a.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentPanelId = item.id;
+            document.querySelectorAll('.sub-link').forEach(link => {
+              link.classList.toggle('active', link.dataset.panel === currentPanelId);
+            });
+            document.querySelectorAll('.sub-panel').forEach(panel => {
+              panel.classList.toggle('active', panel.dataset.panel === currentPanelId);
+            });
+            document.body.dataset.panel = currentPanelId;
+          });
+          nav.appendChild(a);
+        });
+        subnavContainer.appendChild(nav);
+      }
+
+      // ---------- 渲染所有面板 ----------
+      function renderPanels() {
+        const page = PAGES.find(p => p.id === currentPageId);
+        if (!page) return;
+
+        panelsContainer.innerHTML = '';
+
+        if (page.id === 'index') {
+          const panelDiv = document.createElement('section');
+          panelDiv.className = 'sub-panel active';
+          panelDiv.dataset.panel = 'home';
+          panelDiv.setAttribute('aria-label', '首页内容');
+
+          const mosaicDiv = document.createElement('div');
+          mosaicDiv.className = 'svg-mosaic';
+
+          page.panels[0].images.forEach((src, idx) => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = `首页 SVG ${idx + 1}`;
+            img.onerror = function() {
+              this.style.backgroundColor = '#e9e1d8';
+              this.style.minHeight = '100px';
+              this.alt = '图片缺失';
+            };
+            mosaicDiv.appendChild(img);
+          });
+
+          panelDiv.appendChild(mosaicDiv);
+          panelsContainer.appendChild(panelDiv);
+          return;
+        }
+
+        page.panels.forEach(panel => {
+          const panelDiv = document.createElement('section');
+          panelDiv.className = 'sub-panel' + (panel.id === currentPanelId ? ' active' : '');
+          panelDiv.dataset.panel = panel.id;
+          panelDiv.setAttribute('aria-label', (page.subNav.find(s => s.id === panel.id)?.label || panel.id) + '内容');
+
+          const mosaicDiv = document.createElement('div');
+          mosaicDiv.className = 'svg-mosaic';
+
+          panel.images.forEach((src, idx) => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = `${page.label} ${panel.id} SVG ${idx + 1}`;
+            img.onerror = function() {
+              this.style.backgroundColor = '#e9e1d8';
+              this.style.minHeight = '100px';
+              this.alt = '图片缺失';
+            };
+            mosaicDiv.appendChild(img);
+          });
+
+          panelDiv.appendChild(mosaicDiv);
+          panelsContainer.appendChild(panelDiv);
+        });
+      }
+
+      // ---------- 切换板块 ----------
+      function switchPage(pageId) {
+        const page = PAGES.find(p => p.id === pageId);
+        if (!page) return;
+
+        currentPageId = pageId;
+        if (pageId === 'index') {
+          currentPanelId = 'home';
+        } else {
+          currentPanelId = page.subNav[0]?.id || '';
+        }
+
+        navLinks.forEach(link => {
+          const linkPage = link.dataset.page;
+          link.classList.toggle('active', linkPage === pageId);
+        });
+
+        document.body.dataset.page = pageId;
+
+        renderSubNav();
+        renderPanels();
+      }
+
+      // ---------- 初始化导航 ----------
+      function initNavigation() {
+        navLinks.forEach(link => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const pageId = link.dataset.page;
+            if (pageId && pageId !== currentPageId) {
+              switchPage(pageId);
+            }
+          });
+        });
+
+        switchPage('index');
+      }
+
+      // ============================================================
+      // 音乐控制模块 —— 随机选曲、单曲循环、切换页面不中断
+      // 策略：优先尝试自动播放，失败则等用户首次交互
+      // ============================================================
+      
+      const MAX_SONG_INDEX = 5;
+      const SONG_EXTENSION = '.mp3';
+      const MUSIC_ENABLED_KEY = 'site-music-enabled-session-v1';
+
+      let musicAudio = null;
+      let currentSongSrc = null;
+      let unlockListenersAttached = false;
+
+      function buildSongList() {
+        const list = [];
+        for (let i = 1; i <= MAX_SONG_INDEX; i++) {
+          list.push(String(i) + SONG_EXTENSION);
+        }
+        return list;
+      }
+
+      function pickRandomSong(list) {
+        if (!list || list.length === 0) return null;
+        return list[Math.floor(Math.random() * list.length)];
+      }
+
+      function getMusicAudio() {
+        if (!musicAudio) {
+          musicAudio = new Audio();
+          musicAudio.preload = 'auto';
+          musicAudio.loop = true;
+          musicAudio.volume = 0.35;
+
+          musicAudio.addEventListener('canplay', () => {
+            if (getMusicEnabled() && musicAudio.paused) {
+              tryPlayMusic();
+            }
+          });
+
+          musicAudio.addEventListener('error', () => {
+            const err = musicAudio.error;
+            const codes = {1:'已中止', 2:'网络错误', 3:'解码失败', 4:'格式不支持/路径错误'};
+            console.warn('音乐加载失败：', currentSongSrc, '错误码', err ? err.code : '?', codes[err ? err.code : 0] || '');
+          });
+        }
+        return musicAudio;
+      }
+
+      function getMusicEnabled() {
+        try {
+          const stored = sessionStorage.getItem(MUSIC_ENABLED_KEY);
+          if (!stored) return true;
+          const parsed = JSON.parse(stored);
+          return parsed.enabled !== false;
+        } catch (e) {
+          return true;
+        }
+      }
+
+      function setMusicEnabled(enabled) {
+        try {
+          sessionStorage.setItem(MUSIC_ENABLED_KEY, JSON.stringify({ enabled }));
+        } catch (e) {}
+      }
+
+      function updateMusicButton(isPlaying) {
+        const btn = document.querySelector('.music-toggle');
+        if (!btn) return;
+        btn.classList.toggle('is-playing', isPlaying);
+        btn.classList.toggle('is-muted', !isPlaying);
+        btn.textContent = isPlaying ? '♫' : '♪';
+        btn.setAttribute('aria-pressed', String(isPlaying));
+        btn.setAttribute('aria-label', isPlaying ? '音乐已开启，点击关闭' : '音乐已关闭，点击开启');
+      }
+
+      function tryPlayMusic() {
+        const audio = getMusicAudio();
+        if (!audio.src) return Promise.resolve(false);
+        if (!audio.paused) {
+          updateMusicButton(true);
+          return Promise.resolve(true);
+        }
+        const p = audio.play();
+        if (p && typeof p.then === 'function') {
+          return p.then(() => {
+            updateMusicButton(true);
+            setMusicEnabled(true);
+            return true;
+          }).catch(() => {
+            updateMusicButton(true);
+            return false;
+          });
+        }
+        updateMusicButton(true);
+        return Promise.resolve(true);
+      }
+
+      function pauseMusic() {
+        const audio = getMusicAudio();
+        if (audio) audio.pause();
+        updateMusicButton(false);
+      }
+
+      function attachUnlockListeners() {
+        if (unlockListenersAttached) return;
+        unlockListenersAttached = true;
+
+        const tryUnlock = () => {
+          if (getMusicEnabled() && getMusicAudio().paused) {
+            tryPlayMusic().then((ok) => {
+              if (ok) removeUnlockListeners();
+            });
+          } else if (!getMusicAudio().paused) {
+            removeUnlockListeners();
+          }
+        };
+
+        window.__unlockHandler = tryUnlock;
+        document.addEventListener('click', tryUnlock);
+        document.addEventListener('touchstart', tryUnlock);
+        document.addEventListener('keydown', tryUnlock);
+        document.addEventListener('scroll', tryUnlock, { passive: true });
+        document.addEventListener('mousemove', tryUnlock);
+      }
+
+      function removeUnlockListeners() {
+        const h = window.__unlockHandler;
+        if (!h) return;
+        document.removeEventListener('click', h);
+        document.removeEventListener('touchstart', h);
+        document.removeEventListener('keydown', h);
+        document.removeEventListener('scroll', h);
+        document.removeEventListener('mousemove', h);
+        window.__unlockHandler = null;
+        unlockListenersAttached = false;
+      }
+
+      function initMusic() {
+        const audio = getMusicAudio();
+        audio.loop = true;
+        audio.volume = 0.35;
+
+        const songList = buildSongList();
+        const randomSong = pickRandomSong(songList);
+
+        if (!randomSong) {
+          console.warn('没有可用的歌曲文件。');
+          updateMusicButton(false);
+          return;
+        }
+
+        currentSongSrc = randomSong;
+        audio.src = randomSong;
+        audio.load();
+
+        const enabled = getMusicEnabled();
+        updateMusicButton(enabled);
+
+        if (enabled) {
+          tryPlayMusic();
+          attachUnlockListeners();
+        }
+
+        const musicBtn = document.querySelector('.music-toggle');
+        if (musicBtn) {
+          musicBtn.onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const enabledNow = getMusicEnabled();
+            if (enabledNow) {
+              pauseMusic();
+              setMusicEnabled(false);
+            } else {
+              setMusicEnabled(true);
+              tryPlayMusic();
+            }
+          };
+        }
+      }
+
+      // ---------- 初始化亮度 ----------
+      function initBrightness() {
+        const brightnessBtn = document.querySelector('.brightness-toggle');
+        if (!brightnessBtn) return;
+
+        brightnessBtn.onclick = () => {
+          const isDim = !document.body.classList.contains('is-dim');
+          document.body.classList.toggle('is-dim', isDim);
+          brightnessBtn.classList.toggle('is-dim', isDim);
+          brightnessBtn.textContent = isDim ? '☾' : '☀';
+          brightnessBtn.setAttribute('aria-pressed', String(isDim));
+        };
+      }
+
+      // ---------- 页面初始化 ----------
+      document.addEventListener('DOMContentLoaded', () => {
+        const yearNode = document.getElementById('year');
+        if (yearNode) {
+          yearNode.textContent = new Date().getFullYear();
+        }
+
+        initNavigation();
+
+        const headerTools = document.querySelector('.header-tools');
+        if (headerTools) {
+          if (!headerTools.querySelector('.music-toggle')) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'music-toggle';
+            btn.setAttribute('aria-label', '音乐开关');
+            btn.setAttribute('aria-pressed', 'false');
+            btn.textContent = '♪';
+            headerTools.insertBefore(btn, headerTools.firstChild);
+          }
+          if (!headerTools.querySelector('.brightness-toggle')) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'brightness-toggle';
+            btn.setAttribute('aria-label', '亮度调节');
+            btn.setAttribute('title', '亮度调节');
+            btn.textContent = '☀';
+            headerTools.appendChild(btn);
+          }
+        }
+
+        initMusic();
+        initBrightness();
+      });
+
+    })();
+  </script>
+</body>
+</html>
